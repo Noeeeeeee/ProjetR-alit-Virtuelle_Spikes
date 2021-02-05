@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Spikes.Core.GameModel;
 
 namespace Spikes.Core
 {
@@ -8,6 +9,8 @@ namespace Spikes.Core
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        public GameModel.Plane Plane { get; set; }
 
         public Game1()
         {
@@ -21,6 +24,8 @@ namespace Spikes.Core
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Plane = new GameModel.Plane(this, _spriteBatch);
         }
 
         protected override void LoadContent()
@@ -44,7 +49,9 @@ namespace Spikes.Core
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            Plane.Draw(gameTime);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
