@@ -6,16 +6,13 @@ using System.Text;
 
 namespace Spikes.Core.GameModel
 {
-    public class Plane : DrawableGameComponent
+    public class Plane : GameObject
     {
         private Texture2D _texture;
 
-        private readonly SpriteBatch _spriteBatch;
 
-
-        public Plane(Game game, SpriteBatch spriteBatch) : base(game)
+        public Plane(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
-            _spriteBatch = spriteBatch;
             LoadContent();
         }
 
