@@ -7,14 +7,15 @@ namespace Spikes.Core
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        public GraphicsDeviceManager Graphics { get; }
         private SpriteBatch _spriteBatch;
 
-        public GameModel.Plane Plane { get; set; }
+        public GameObject Plane { get; set; }
+
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -40,9 +41,11 @@ namespace Spikes.Core
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
+
+            _spriteBatch.Begin();
+            Plane.Update(gameTime);
+            _spriteBatch.End();
         }
 
         protected override void Draw(GameTime gameTime)
