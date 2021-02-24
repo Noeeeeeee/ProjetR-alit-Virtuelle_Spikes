@@ -12,7 +12,7 @@ namespace Spikes.Core.GameModel
         private static float velocity { get; set; } = 1f;
 
         private static float gravitation { get; set; } = 1f;
-        private Vector2 Gravitation { get; set; } = new Vector2(velocity, gravitation );
+        private Vector2 Gravitation { get; set; } = new Vector2(velocity , gravitation );
 
         Vector2 planePosition { get; set; } = Vector2.Zero;
 
@@ -46,9 +46,9 @@ namespace Spikes.Core.GameModel
             var kstate = Keyboard.GetState();
 
             if (kstate.IsKeyDown(Keys.Up))
-                planePosition = Vector2.Add(planePosition, new Vector2(velocity, -25));
+                planePosition = Vector2.Add(planePosition, new Vector2(0 * (float)gameTime.ElapsedGameTime.TotalSeconds, -25 * (float)gameTime.ElapsedGameTime.TotalSeconds));
 
-            planePosition = Vector2.Add(planePosition, Gravitation);
+            planePosition = Vector2.Add(planePosition, Gravitation * (float)gameTime.ElapsedGameTime.TotalSeconds);
             var clientBounds = Game.Window.ClientBounds;
 
             if(BoundingRectangle.Left.Equals(clientBounds.Left) || BoundingRectangle.Right.Equals(clientBounds.Right))
