@@ -7,7 +7,11 @@ namespace Spikes.Core
 {
     public class Game1 : Game
     {
+<<<<<<< HEAD
+        private GraphicsDeviceManager _graphics { get; }
+=======
         public GraphicsDeviceManager Graphics { get; }
+>>>>>>> 8fef576c7972f45dca9136ce50a9ee773e92bc19
         private SpriteBatch _spriteBatch;
 
         public GameObject Plane { get; set; }
@@ -43,20 +47,22 @@ namespace Spikes.Core
 
             base.Update(gameTime);
 
+<<<<<<< HEAD
+            Plane.Update(gameTime);
+=======
             _spriteBatch.Begin();
             Plane.Update(gameTime);
             _spriteBatch.End();
+>>>>>>> 8fef576c7972f45dca9136ce50a9ee773e92bc19
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
 
             _spriteBatch.Begin();
             Plane.Draw(gameTime);
             _spriteBatch.End();
-
-             
 
             base.Draw(gameTime);
         }
