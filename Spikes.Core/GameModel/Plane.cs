@@ -67,7 +67,7 @@ namespace Spikes.Core.GameModel
             {
                 if (hasJumped && key == Keys.Space)
                 {
-                    planePosition = Vector2.Add(planePosition, new Vector2(0, -800));
+                    planePosition = Vector2.Add(planePosition, new Vector2(0, -25));
                     hasJumped = false;
                 }
             }
