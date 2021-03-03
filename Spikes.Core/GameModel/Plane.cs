@@ -23,8 +23,8 @@ namespace Spikes.Core.GameModel
 
         bool hasJumped = true;
 
-        bool reachlimitY = false;
-        bool reachlimitX = false;
+        bool reachlimitY { get; set; } = false;
+        bool reachlimitX { get; set; } = false;
 
         //Screen Parameters
         int screenWidth;
@@ -65,39 +65,51 @@ namespace Spikes.Core.GameModel
 
             foreach (Keys key in keyboardState.GetPressedKeys())
             {
-                if (hasJumped && key == Keys.Space)
+                if (hasJumped && key == Input.isle)
                 {
-                    planePosition = Vector2.Add(planePosition, new Vector2(0, -25));
+                    planePosition = Vector2.Add(planePosition, new Vector2(0, -50));
                     hasJumped = false;
                 }
             }
 
-                if (keyboardState.IsKeyUp(Keys.Space))
-                {
-                    hasJumped = true;
-                }
+            if (keyboardState.IsKeyUp(Keys.Space))
+            {
+                hasJumped = true;
+            }
 
-                if (hasJumped)
-                    planePosition = Vector2.Add(planePosition, Gravitation);
+            if (hasJumped)
+                planePosition = Vector2.Add(planePosition, Gravitation);
 
 
 
 
             if (BoundingRectangle.X <= 0)
+            {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
-                reachlimitX = true;
+            }
+
 
             if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth)
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
 
             if (BoundingRectangle.Y <= 0)
+            {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
                 reachlimitY = true;
+            }
+
+            if (reachlimitY == true)
+            {
+                System.Diagnostics.Debug.WriteLine("Touche le haut ou le bas du terrain");
+                reachlimitY = false;
+            }
 
             if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight)
+            {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
-
-
+                reachlimitY = true;
+            }
+                
             base.Update(gameTime);
         }
     }
