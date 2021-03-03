@@ -74,16 +74,7 @@ namespace Spikes.Core.GameModel
                 Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, gravity * (float)gameTime.ElapsedGameTime.TotalSeconds));
 
 
-            //if (keyboardState.IsKeyDown(Keys.Space))
-            //{
-            //    // The reason why planeSpeed is multiplied by gameTime.ElapsedGameTime.TotalSeconds is because, when not using fixed time step, 
-            //    // the time between Update calls varies. 
-            //    // To account for this, the ballSpeed is multiplied by the amount of time that has passed since the last Update call. 
-            //    // The result is that the ball appears to move at the same speed regardless of what framerate the game happens to be running at.
-            //    Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, jump * (float)gameTime.ElapsedGameTime.TotalSeconds));
-            //}
-            //else Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, gravity * (float)gameTime.ElapsedGameTime.TotalSeconds));
-
+           
             //var touchCollection = TouchPanel.GetState(); // phone's screen
             //foreach (var touchLocation in touchCollection)
             //{
