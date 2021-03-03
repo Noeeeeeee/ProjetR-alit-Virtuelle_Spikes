@@ -67,7 +67,7 @@ namespace Spikes.Core.GameModel
 
             foreach (Keys key in keyboardState.GetPressedKeys())
             {
-                if (hasJumped && key == Input.isle)
+                if (hasJumped && key == Keys.Space)
                 {
                     planePosition = Vector2.Add(planePosition, new Vector2(0, -50));
                     hasJumped = false;
