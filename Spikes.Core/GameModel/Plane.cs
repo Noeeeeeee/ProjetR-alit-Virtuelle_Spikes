@@ -59,6 +59,8 @@ namespace Spikes.Core.GameModel
 
         public override void Update(GameTime gameTime)
         {
+            screenWidth = GraphicsDevice.Viewport.Width;
+            screenHeight = GraphicsDevice.Viewport.Height;
 
             var keyboardState = Keyboard.GetState();
 
@@ -82,7 +84,19 @@ namespace Spikes.Core.GameModel
 
 
 
+            //var touchCollection = TouchPanel.GetState(); // phone's screen
+            //foreach (var touchLocation in touchCollection)
+            //{
+            //    if (touchLocation.State == TouchLocationState.Pressed)
+            //    {
+            //        //if (touchLocation.Position.X > 10)
+            //        //{
+            //        //}
+            //        Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, jump * (float)gameTime.ElapsedGameTime.TotalSeconds));
+            //    }
+            //    else Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, gravity * (float)gameTime.ElapsedGameTime.TotalSeconds));
 
+            //}
             if (BoundingRectangle.X <= 0)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
