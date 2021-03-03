@@ -16,7 +16,7 @@ namespace Spikes.Core
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
-        //public GameObject Plane { get; set; }
+        public GameObject Plane { get; set; }
 
 
         public Game1()
@@ -45,8 +45,7 @@ namespace Spikes.Core
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Background background = new Background(this, _spriteBatch);
             GameObjects.Add(background);
-            GameObject plane  = new GameModel.Plane(this, _spriteBatch);
-            GameObjects.Add(plane);
+            Plane  = new GameModel.Plane(this, _spriteBatch);
         }
 
         protected override void LoadContent()
@@ -76,6 +75,9 @@ namespace Spikes.Core
                 gameObjects.Update(gameTime);
             }
             _spriteBatch.End();
+            _spriteBatch.Begin();
+            Plane.Update(gameTime);
+            _spriteBatch.End();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -89,7 +91,9 @@ namespace Spikes.Core
             }
             _spriteBatch.End();
 
-             
+            _spriteBatch.Begin();
+            Plane.Draw(gameTime);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

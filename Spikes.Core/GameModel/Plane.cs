@@ -59,6 +59,8 @@ namespace Spikes.Core.GameModel
 
         public override void Update(GameTime gameTime)
         {
+            screenWidth = GraphicsDevice.Viewport.Width;
+            screenHeight = GraphicsDevice.Viewport.Height;
 
             var keyboardState = Keyboard.GetState();
 
