@@ -11,7 +11,6 @@ namespace Spikes.Core.GameModel
     public class Plane : GameObject
     {
         private Texture2D _texture;
-        private SpriteBatch _spriteBatch;
         private static float velocity { get; set; } = 5f;
 
         private static float gravitation { get; set; } = 5f;
@@ -34,7 +33,6 @@ namespace Spikes.Core.GameModel
 
         public Plane(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
-            _spriteBatch = spriteBatch;
             LoadContent();
         }
 
@@ -69,18 +67,18 @@ namespace Spikes.Core.GameModel
             {
                 if (hasJumped && key == Keys.Space)
                 {
-                    planePosition = Vector2.Add(planePosition, new Vector2(0, -25));
+                    planePosition = Vector2.Add(planePosition, new Vector2(0, -50));
                     hasJumped = false;
                 }
             }
 
-                if (keyboardState.IsKeyUp(Keys.Space))
-                {
-                    hasJumped = true;
-                }
+            if (keyboardState.IsKeyUp(Keys.Space))
+            {
+                hasJumped = true;
+            }
 
-                if (hasJumped)
-                    planePosition = Vector2.Add(planePosition, Gravitation);
+            
+             planePosition = Vector2.Add(planePosition, Gravitation);
 
 
 

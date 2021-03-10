@@ -16,7 +16,7 @@ namespace Spikes.Core
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
-        public GameObject Plane { get; set; }
+        public GameObject Background { get; set; }
 
 
         public Game1()
@@ -24,6 +24,8 @@ namespace Spikes.Core
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Graphics.PreferredBackBufferWidth = 720;
+            Graphics.PreferredBackBufferHeight = 800;
         }
 
         public void ScalePresentationArea()
@@ -42,10 +44,13 @@ namespace Spikes.Core
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Background background = new Background(this, _spriteBatch);
-            GameObjects.Add(background);
-            Plane  = new GameModel.Plane(this, _spriteBatch);
+            GameModel.Plane plane = new GameModel.Plane(this, _spriteBatch);
+            var spikesManager = new SpikesManager(this, _spriteBatch);
+            GameObjects.Add(plane);
+            GameObjects.Add(spikesManager);
+            Background = new Background(this, _spriteBatch);
         }
 
         protected override void LoadContent()
@@ -57,6 +62,7 @@ namespace Spikes.Core
 
         protected override void Update(GameTime gameTime)
         {
+            Graphics.ApplyChanges();
             //Confirm the screen has not been resized by the user
             if (backbufferHeight != GraphicsDevice.PresentationParameters.BackBufferHeight ||
                 backbufferWidth != GraphicsDevice.PresentationParameters.BackBufferWidth)
@@ -70,13 +76,13 @@ namespace Spikes.Core
             base.Update(gameTime);
 
             _spriteBatch.Begin();
+            Background.Update(gameTime);
+            _spriteBatch.End();
+            _spriteBatch.Begin();
             foreach (var gameObjects in GameObjects)
             {
                 gameObjects.Update(gameTime);
             }
-            _spriteBatch.End();
-            _spriteBatch.Begin();
-            Plane.Update(gameTime);
             _spriteBatch.End();
         }
 
@@ -85,14 +91,14 @@ namespace Spikes.Core
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, globalTransformation);
-            foreach(var gameObjects in GameObjects)
-            {
-                gameObjects.Draw(gameTime);
-            }
+            Background.Draw(gameTime);
             _spriteBatch.End();
 
             _spriteBatch.Begin();
-            Plane.Draw(gameTime);
+            foreach (var gameObjects in GameObjects)
+            {
+                gameObjects.Draw(gameTime);
+            }
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -6,15 +6,18 @@ using System.Text;
 
 namespace Spikes.Core.GameModel
 {
-    class Background : GameObject
+    public class Spike : GameObject
     {
+        public Texture2D _texture;
+        private string imagePath;
 
-        private Texture2D _imageBackground;
+        Vector2 spikePosition { get; set; }
 
-        public Background(Game1 game, SpriteBatch spriteBatch) : base(game, spriteBatch)
+        public Spike(Game game, SpriteBatch spriteBatch, Vector2 position, string imagePath) : base(game, spriteBatch)
         {
+            this.imagePath = imagePath;
             LoadContent();
-
+            spikePosition = position;
         }
 
         public override void Initialize()
@@ -25,20 +28,18 @@ namespace Spikes.Core.GameModel
         protected override void LoadContent()
         {
             base.LoadContent();
-            _imageBackground = Game.Content.Load<Texture2D>("Sprites/Background/background");
+            _texture = Game.Content.Load<Texture2D>(imagePath);
 
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Draw(_imageBackground, Vector2.Zero, Color.White);
+            _spriteBatch.Draw(_texture, spikePosition, Color.White);
 
 
             base.Draw(gameTime);
