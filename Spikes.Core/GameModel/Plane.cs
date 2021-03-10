@@ -12,12 +12,14 @@ namespace Spikes.Core.GameModel
     {
         private Texture2D _texture;
         private SpriteBatch _spriteBatch;
-        private static float velocity { get; set; } = 5f;
 
-        private static float gravitation { get; set; } = 5f;
+        private SpriteEffects flip = SpriteEffects.None;
+        private static float velocity { get; set; } = 3f;
+
+        private static float gravitation { get; set; } = 3f;
         private Vector2 Gravitation { get; set; } = new Vector2(velocity, gravitation);
 
-        Vector2 planePosition { get; set; } = Vector2.Zero;
+        Vector2 planePosition { get; set; }
 
         private Rectangle BoundingRectangle => new Rectangle((int)planePosition.X, (int)planePosition.Y, _texture.Width, _texture.Height);
 
@@ -25,6 +27,9 @@ namespace Spikes.Core.GameModel
 
         bool reachlimitY { get; set; } = false;
         bool reachlimitX { get; set; } = false;
+
+        //false = right and true = left
+        bool BoolDirection { get; set; } = false;
 
         //Screen Parameters
         int screenWidth;
@@ -49,13 +54,29 @@ namespace Spikes.Core.GameModel
             _texture = Game.Content.Load<Texture2D>("Sprites/Plane/planeRed1");
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
+            planePosition = new Vector2(screenWidth / 2, screenHeight / 2);
         }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            _spriteBatch.Draw(_texture, planePosition, Color.White);
+            
+            if (BoundingRectangle.X <= 0)
+            {         
+                flip = SpriteEffects.None;
+            }
+
+            if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth)
+            {
+                flip = SpriteEffects.FlipHorizontally;
+
+            }
+
+           //_spriteBatch.Draw(_texture, planePosition, Color.White);
+            _spriteBatch.Draw(_texture, planePosition, null, Color.White, 0.0f, Vector2.Zero, 1.0f, flip, 0.0f);
         }
+
+
 
         public override void Update(GameTime gameTime)
         {
@@ -69,8 +90,19 @@ namespace Spikes.Core.GameModel
             {
                 if (hasJumped && key == Keys.Space)
                 {
-                    planePosition = Vector2.Add(planePosition, new Vector2(0, -50));
-                    hasJumped = false;
+                    if(BoolDirection) //A gauche
+                    {
+                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -50));
+                        hasJumped = false;
+                    }
+
+                    else //A droite
+                    {
+                        planePosition = Vector2.Add(planePosition, new Vector2(20, -50));
+                        hasJumped = false;
+                    }
+
+
                 }
             }
 
@@ -79,10 +111,8 @@ namespace Spikes.Core.GameModel
                 hasJumped = true;
             }
 
-            if (hasJumped)
                 planePosition = Vector2.Add(planePosition, Gravitation);
-
-
+     
 
             //var touchCollection = TouchPanel.GetState(); // phone's screen
             //foreach (var touchLocation in touchCollection)
@@ -100,13 +130,18 @@ namespace Spikes.Core.GameModel
             if (BoundingRectangle.X <= 0)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
+                BoolDirection = false;
             }
 
 
             if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth)
+            {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
+                BoolDirection = true;
+            }
+                
 
-            if (BoundingRectangle.Y <= 0)
+            if (BoundingRectangle.Y <= 100)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
                 reachlimitY = true;
@@ -118,14 +153,13 @@ namespace Spikes.Core.GameModel
                 reachlimitY = false;
             }
 
-            if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight)
+            if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight-100)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
                 reachlimitY = true;
             }
-                
+
             base.Update(gameTime);
         }
     }
 }
-
