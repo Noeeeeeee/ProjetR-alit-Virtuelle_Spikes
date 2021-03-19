@@ -217,6 +217,30 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Spikes/rockGrassDown.png
 
+#begin Sprites/Spikes/rockGrassLeft.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Spikes/rockGrassLeft.png
+
+#begin Sprites/Spikes/rockGrassRight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Spikes/rockGrassRight.png
+
 #begin Sprites/Spikes/rockSnow.png
 /importer:TextureImporter
 /processor:TextureProcessor

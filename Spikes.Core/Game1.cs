@@ -12,17 +12,21 @@ namespace Spikes.Core
         private SpriteBatch _spriteBatch;
         Vector2 baseScreenSize = new Vector2(800, 480);
         private Matrix globalTransformation;
-        int backbufferWidth, backbufferHeight;
-
-        private bool _hasStarted = false;
-
+        int backbufferWidth, backbufferHeight, score;
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
+        private bool _hasStarted;
+
+        private bool died = false;
+        GameModel.Plane Plane { get; set; }
+
+        public SpikesManager SpikesManager { get; set; }
+
         public GameObject Background { get; set; }
 
-        private SpriteFont font;
-        
+
+
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
@@ -49,7 +53,7 @@ namespace Spikes.Core
 
             base.Initialize();
 
-           
+
         }
 
         protected override void LoadContent()
@@ -63,23 +67,49 @@ namespace Spikes.Core
         private void Restart()
         {
 
-            
-            GameModel.Plane plane = new GameModel.Plane(this, _spriteBatch);
-            var spikesManager = new SpikesManager(this, _spriteBatch);
-            GameObjects.Add(plane);
-            GameObjects.Add(spikesManager);
+            score = 0;
+            Plane = new GameModel.Plane(this, _spriteBatch);
+            SpikesManager = new SpikesManager(this, _spriteBatch);
+            SpikesManager.loadSpikeRight();
+            Plane.ToucheMur += Plane_ToucheMur;
+            GameObjects.Add(Plane);
+            GameObjects.Add(SpikesManager);
             Background = new Background(this, _spriteBatch);
 
             _hasStarted = false;
         }
 
+        private bool HandleCollision()
+        {
+            foreach (var spike in SpikesManager.spikesListLeftRight)
+            {
+                foreach (var rectangle in spike.BoundingRectangles)
+                {
+                    if (rectangle.Intersects(Plane.BoundingRectangle))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private void Plane_ToucheMur(bool BoolDirection)
+        {
+            SpikesManager.spikesListLeftRight.Clear();
+            if (!BoolDirection) // quand l'avion va vers la droite
+            {
+                score++;
+                SpikesManager.loadSpikeRight();
+            }
+            else
+            {
+                score++;
+                SpikesManager.loadSpikeLeft();
+            }
+        }
 
 
         protected override void Update(GameTime gameTime)
         {
-       
-            
-
             Graphics.ApplyChanges();
             //Confirm the screen has not been resized by the user
             if (backbufferHeight != GraphicsDevice.PresentationParameters.BackBufferHeight ||
@@ -95,42 +125,42 @@ namespace Spikes.Core
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 _hasStarted = true;
 
-            
+
             if (!_hasStarted)
                 return;
 
 
-            _spriteBatch.Begin();
             Background.Update(gameTime);
-            _spriteBatch.End();
-            _spriteBatch.Begin();
+
             foreach (var gameObjects in GameObjects)
             {
                 gameObjects.Update(gameTime);
             }
-            _spriteBatch.End();
 
-            bool died = false;
-            foreach(var gameobject in GameObjects)
+            died = HandleCollision();
+
+            foreach (var gameobject in GameObjects)
             {
-                if(gameobject is GameModel.Plane)
+                if (gameobject is GameModel.Plane)
                 {
                     var plane = gameobject as GameModel.Plane;
-                    if(plane.hasDied)
+                    if (plane.hasDied)
                     {
                         died = true;
-                        
+
                     }
                 }
 
             }
-            if(died)
+
+            if (died)
             {
                 GameObjects.Clear();
                 Restart();
-            }       
+            }
             base.Update(gameTime);
         }
+
 
         protected override void Draw(GameTime gameTime)
         {
