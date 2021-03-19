@@ -54,7 +54,9 @@ namespace Spikes.Core.GameModel
             int y = 100;
             for (int i = 0; i < maxRight; i++)
             {
-                spikesListLeftRight.Add(new Spike(Game, _spriteBatch, new Vector2(screenWidth - 100, y), "Sprites/Spikes/rockGrassRight"));
+                Spike spike = new Spike(Game, _spriteBatch, new Vector2(screenWidth - 100, y), "Sprites/Spikes/rockGrassRight");
+                spike.setRightRectangles(y);
+                spikesListLeftRight.Add(spike);
                 y += 50 * RandomHelper.getNextIntBetween(1, 4);
             }
         }

@@ -16,11 +16,16 @@ namespace Spikes.Core
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
+        private bool _hasStarted;
+
+        bool died = false;
+
         GameModel.Plane Plane { get; set; }
 
         public SpikesManager SpikesManager { get; set; }
 
         public GameObject Background { get; set; }
+
 
 
         public Game1()
@@ -101,12 +106,6 @@ namespace Spikes.Core
             }
         }
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-        }
 
         protected override void Update(GameTime gameTime)
         {
@@ -121,27 +120,27 @@ namespace Spikes.Core
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            base.Update(gameTime);
+            //Condition to start the game
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                _hasStarted = true;
 
-            
+
             if (!_hasStarted)
                 return;
 
 
-            _spriteBatch.Begin();
             Background.Update(gameTime);
 
             foreach (var gameObjects in GameObjects)
             {
                 gameObjects.Update(gameTime);
             }
-            var isDied = HandleCollision();
-            if (isDied)
+            var died = HandleCollision();
+            if (died)
             {
                 
             }
 
-            bool died = false;
             foreach(var gameobject in GameObjects)
             {
                 if(gameobject is GameModel.Plane)
@@ -162,6 +161,7 @@ namespace Spikes.Core
             }       
             base.Update(gameTime);
         }
+
 
         protected override void Draw(GameTime gameTime)
         {
