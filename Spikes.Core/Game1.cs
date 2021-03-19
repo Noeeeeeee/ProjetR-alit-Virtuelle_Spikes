@@ -18,8 +18,7 @@ namespace Spikes.Core
 
         private bool _hasStarted;
 
-        bool died = false;
-
+        private bool died = false;
         GameModel.Plane Plane { get; set; }
 
         public SpikesManager SpikesManager { get; set; }
@@ -135,7 +134,8 @@ namespace Spikes.Core
             {
                 gameObjects.Update(gameTime);
             }
-            died = HandleCollision();
+            
+            died = HandleCollision(); 
 
             foreach(var gameobject in GameObjects)
             {
@@ -150,6 +150,7 @@ namespace Spikes.Core
                 }
 
             }
+
             if(died)
             {
                 GameObjects.Clear();
