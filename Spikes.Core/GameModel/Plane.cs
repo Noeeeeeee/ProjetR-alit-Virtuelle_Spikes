@@ -25,9 +25,15 @@ namespace Spikes.Core.GameModel
 
         bool hasJumped = true;
 
+        //reach the limit of top screen
         bool reachlimitY { get; set; } = false;
+
+        //reach the limit of bottom screen
         bool reachlimitX { get; set; } = false;
 
+        public bool hasDied = false;
+
+        
         //false = right and true = left
         bool BoolDirection { get; set; } = false;
 
@@ -151,12 +157,14 @@ namespace Spikes.Core.GameModel
             {
                 System.Diagnostics.Debug.WriteLine("Touche le haut ou le bas du terrain");
                 reachlimitY = false;
+                hasDied = true;
             }
 
             if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight-100)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
                 reachlimitY = true;
+                hasDied = true;
             }
 
             base.Update(gameTime);

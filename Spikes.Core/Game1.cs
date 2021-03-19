@@ -14,6 +14,8 @@ namespace Spikes.Core
         private Matrix globalTransformation;
         int backbufferWidth, backbufferHeight;
 
+        private bool _hasStarted = false;
+
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
         public GameObject Background { get; set; }
@@ -45,23 +47,37 @@ namespace Spikes.Core
 
             base.Initialize();
 
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameModel.Plane plane = new GameModel.Plane(this, _spriteBatch);
-            var spikesManager = new SpikesManager(this, _spriteBatch);
-            GameObjects.Add(plane);
-            GameObjects.Add(spikesManager);
-            Background = new Background(this, _spriteBatch);
+           
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Restart();
 
             // TODO: use this.Content to load your game content here
         }
 
+        private void Restart()
+        {
+
+            
+            GameModel.Plane plane = new GameModel.Plane(this, _spriteBatch);
+            var spikesManager = new SpikesManager(this, _spriteBatch);
+            GameObjects.Add(plane);
+            GameObjects.Add(spikesManager);
+            Background = new Background(this, _spriteBatch);
+
+            _hasStarted = false;
+        }
+
+
+
         protected override void Update(GameTime gameTime)
         {
+       
+            
+
             Graphics.ApplyChanges();
             //Confirm the screen has not been resized by the user
             if (backbufferHeight != GraphicsDevice.PresentationParameters.BackBufferHeight ||
@@ -73,7 +89,14 @@ namespace Spikes.Core
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            base.Update(gameTime);
+            //Condition to start the game
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                _hasStarted = true;
+
+            
+            if (!_hasStarted)
+                return;
+
 
             _spriteBatch.Begin();
             Background.Update(gameTime);
@@ -84,6 +107,27 @@ namespace Spikes.Core
                 gameObjects.Update(gameTime);
             }
             _spriteBatch.End();
+
+            bool died = false;
+            foreach(var gameobject in GameObjects)
+            {
+                if(gameobject is GameModel.Plane)
+                {
+                    var plane = gameobject as GameModel.Plane;
+                    if(plane.hasDied)
+                    {
+                        died = true;
+                        
+                    }
+                }
+
+            }
+            if(died)
+            {
+                GameObjects.Clear();
+                Restart();
+            }       
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
