@@ -49,14 +49,30 @@ namespace Spikes.Core
 
             base.Initialize();
 
+           
+        }
+
+        protected override void LoadContent()
+        {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Plane = new GameModel.Plane(this, _spriteBatch);
+            Restart();
+
+            // TODO: use this.Content to load your game content here
+        }
+
+        private void Restart()
+        {
+
+            
+           Plane = new GameModel.Plane(this, _spriteBatch);
             SpikesManager = new SpikesManager(this, _spriteBatch);
             SpikesManager.loadSpikeRight();
             Plane.ToucheMur += Plane_ToucheMur;
             GameObjects.Add(Plane);
             GameObjects.Add(SpikesManager);
             Background = new Background(this, _spriteBatch);
+
+            _hasStarted = false;
         }
 
         private bool HandleCollision()
@@ -107,6 +123,12 @@ namespace Spikes.Core
 
             base.Update(gameTime);
 
+            
+            if (!_hasStarted)
+                return;
+
+
+            _spriteBatch.Begin();
             Background.Update(gameTime);
 
             foreach (var gameObjects in GameObjects)
@@ -118,6 +140,27 @@ namespace Spikes.Core
             {
                 
             }
+
+            bool died = false;
+            foreach(var gameobject in GameObjects)
+            {
+                if(gameobject is GameModel.Plane)
+                {
+                    var plane = gameobject as GameModel.Plane;
+                    if(plane.hasDied)
+                    {
+                        died = true;
+                        
+                    }
+                }
+
+            }
+            if(died)
+            {
+                GameObjects.Clear();
+                Restart();
+            }       
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
