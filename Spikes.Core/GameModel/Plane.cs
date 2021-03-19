@@ -21,7 +21,7 @@ namespace Spikes.Core.GameModel
 
         Vector2 planePosition { get; set; }
 
-        private Rectangle BoundingRectangle => new Rectangle((int)planePosition.X, (int)planePosition.Y, _texture.Width, _texture.Height);
+        public Rectangle BoundingRectangle => new Rectangle((int)planePosition.X, (int)planePosition.Y, _texture.Width, _texture.Height);
 
         bool hasJumped = true;
 
@@ -35,7 +35,7 @@ namespace Spikes.Core.GameModel
         int screenWidth;
         int screenHeight;
 
-
+        public event Action<bool> ToucheMur;
 
         public Plane(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
@@ -60,9 +60,9 @@ namespace Spikes.Core.GameModel
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            
+
             if (BoundingRectangle.X <= 0)
-            {         
+            {
                 flip = SpriteEffects.None;
             }
 
@@ -72,7 +72,7 @@ namespace Spikes.Core.GameModel
 
             }
 
-           //_spriteBatch.Draw(_texture, planePosition, Color.White);
+            //_spriteBatch.Draw(_texture, planePosition, Color.White);
             _spriteBatch.Draw(_texture, planePosition, null, Color.White, 0.0f, Vector2.Zero, 1.0f, flip, 0.0f);
         }
 
@@ -90,7 +90,7 @@ namespace Spikes.Core.GameModel
             {
                 if (hasJumped && key == Keys.Space)
                 {
-                    if(BoolDirection) //A gauche
+                    if (BoolDirection) //A gauche
                     {
                         planePosition = Vector2.Add(planePosition, new Vector2(-20, -50));
                         hasJumped = false;
@@ -101,8 +101,6 @@ namespace Spikes.Core.GameModel
                         planePosition = Vector2.Add(planePosition, new Vector2(20, -50));
                         hasJumped = false;
                     }
-
-
                 }
             }
 
@@ -111,8 +109,8 @@ namespace Spikes.Core.GameModel
                 hasJumped = true;
             }
 
-                planePosition = Vector2.Add(planePosition, Gravitation);
-     
+            planePosition = Vector2.Add(planePosition, Gravitation);
+
 
             //var touchCollection = TouchPanel.GetState(); // phone's screen
             //foreach (var touchLocation in touchCollection)
@@ -127,19 +125,19 @@ namespace Spikes.Core.GameModel
             //    else Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, gravity * (float)gameTime.ElapsedGameTime.TotalSeconds));
 
             //}
-            if (BoundingRectangle.X <= 0)
+            if (BoundingRectangle.X <= 0 && BoolDirection)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
                 BoolDirection = false;
+                ToucheMur(BoolDirection);
             }
 
-
-            if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth)
+            if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth && !BoolDirection)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
                 BoolDirection = true;
+                ToucheMur(BoolDirection);
             }
-                
 
             if (BoundingRectangle.Y <= 100)
             {
@@ -153,7 +151,7 @@ namespace Spikes.Core.GameModel
                 reachlimitY = false;
             }
 
-            if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight-100)
+            if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight - 100)
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
                 reachlimitY = true;

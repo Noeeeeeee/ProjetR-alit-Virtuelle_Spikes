@@ -16,6 +16,10 @@ namespace Spikes.Core
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
+        GameModel.Plane Plane { get; set; }
+
+        public SpikesManager SpikesManager { get; set; }
+
         public GameObject Background { get; set; }
 
 
@@ -46,11 +50,39 @@ namespace Spikes.Core
             base.Initialize();
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameModel.Plane plane = new GameModel.Plane(this, _spriteBatch);
-            var spikesManager = new SpikesManager(this, _spriteBatch);
-            GameObjects.Add(plane);
-            GameObjects.Add(spikesManager);
+            Plane = new GameModel.Plane(this, _spriteBatch);
+            SpikesManager = new SpikesManager(this, _spriteBatch);
+            SpikesManager.loadSpikeRight();
+            Plane.ToucheMur += Plane_ToucheMur;
+            GameObjects.Add(Plane);
+            GameObjects.Add(SpikesManager);
             Background = new Background(this, _spriteBatch);
+        }
+
+        private bool HandleCollision()
+        {
+            foreach(var spike in SpikesManager.spikesListLeftRight)
+            {
+               foreach( var rectangle in spike.BoundingRectangles)
+                {
+                    if (rectangle.Intersects(Plane.BoundingRectangle))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private void Plane_ToucheMur(bool BoolDirection)
+        {
+            SpikesManager.spikesListLeftRight.Clear();
+            if (!BoolDirection) // quand l'avion va vers la droite
+            {
+                SpikesManager.loadSpikeRight();
+            }
+            else
+            {
+                SpikesManager.loadSpikeLeft();
+            }
         }
 
         protected override void LoadContent()
@@ -75,15 +107,17 @@ namespace Spikes.Core
 
             base.Update(gameTime);
 
-            _spriteBatch.Begin();
             Background.Update(gameTime);
-            _spriteBatch.End();
-            _spriteBatch.Begin();
+
             foreach (var gameObjects in GameObjects)
             {
                 gameObjects.Update(gameTime);
             }
-            _spriteBatch.End();
+            var isDied = HandleCollision();
+            if (isDied)
+            {
+                
+            }
         }
 
         protected override void Draw(GameTime gameTime)
