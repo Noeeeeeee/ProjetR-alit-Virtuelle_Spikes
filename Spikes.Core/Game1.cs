@@ -135,11 +135,7 @@ namespace Spikes.Core
             {
                 gameObjects.Update(gameTime);
             }
-            var died = HandleCollision();
-            if (died)
-            {
-                
-            }
+            died = HandleCollision();
 
             foreach(var gameobject in GameObjects)
             {
