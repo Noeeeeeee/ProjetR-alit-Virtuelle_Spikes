@@ -16,11 +16,13 @@ namespace Spikes.Core
 
         private bool _hasStarted = false;
 
+
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
         public GameObject Background { get; set; }
 
-
+        private SpriteFont font;
+        
         public Game1()
         {
             Graphics = new GraphicsDeviceManager(this);
