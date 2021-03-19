@@ -70,7 +70,7 @@ namespace Spikes.Core
             score = 0;
             Plane = new GameModel.Plane(this, _spriteBatch);
             SpikesManager = new SpikesManager(this, _spriteBatch);
-            SpikesManager.loadSpikeRight();
+            SpikesManager.loadSpikeRight(score);
             Plane.ToucheMur += Plane_ToucheMur;
             GameObjects.Add(Plane);
             GameObjects.Add(SpikesManager);
@@ -98,12 +98,12 @@ namespace Spikes.Core
             if (!BoolDirection) // quand l'avion va vers la droite
             {
                 score++;
-                SpikesManager.loadSpikeRight();
+                SpikesManager.loadSpikeRight(score);
             }
             else
             {
                 score++;
-                SpikesManager.loadSpikeLeft();
+                SpikesManager.loadSpikeLeft(score);
             }
         }
 

@@ -35,30 +35,46 @@ namespace Spikes.Core.GameModel
 
         }
 
-        public void loadSpikeLeft()
+        public void loadSpikeLeft(int score)
         {
-            int maxLeft = RandomHelper.getNextIntBetween(1, 5);
+            int maxSpikesOnLeft = getDifficulties(score);
             int y = 100;
-            for (int i = 0; i < maxLeft; i++)
+            for (int i = 0; i < maxSpikesOnLeft; i++)
             {
+                y += 50 * RandomHelper.getNextIntBetween(1, 4);
                 Spike spike = new Spike(Game, _spriteBatch, new Vector2(0, y), "Sprites/Spikes/rockGrassLeft");
                 spike.setLeftRectangles(y);
                 spikesListLeftRight.Add(spike);
-                y += 50 * RandomHelper.getNextIntBetween(1, 4);
             }
         }
 
-        public void loadSpikeRight()
+        public void loadSpikeRight(int score)
         {
-            int maxRight = RandomHelper.getNextIntBetween(1, 5);
+            int maxspikesOnRight = getDifficulties(score);
             int y = 100;
-            for (int i = 0; i < maxRight; i++)
+            for (int i = 0; i < maxspikesOnRight; i++)
             {
+                y += 50 * RandomHelper.getNextIntBetween(1, 4);
                 Spike spike = new Spike(Game, _spriteBatch, new Vector2(screenWidth - 100, y), "Sprites/Spikes/rockGrassRight");
                 spike.setRightRectangles(y);
                 spikesListLeftRight.Add(spike);
-                y += 50 * RandomHelper.getNextIntBetween(1, 4);
             }
+        }
+
+        private int getDifficulties(int score)
+        {
+            if(score <= 5)
+            {
+                return RandomHelper.getNextIntBetween(1, 3);
+            }
+            else if(score > 5 && score <= 20)
+            {
+                return RandomHelper.getNextIntBetween(3, 5);
+            }else if (score > 20)
+            {
+                return RandomHelper.getNextIntBetween(5, 8);
+            }
+            return 1;
         }
 
         private void loadSpikesTopBottom(int screenWidth, int screenHeight)

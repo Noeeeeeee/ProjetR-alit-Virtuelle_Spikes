@@ -33,7 +33,7 @@ namespace Spikes.Core.GameModel
 
         public bool hasDied = false;
 
-        
+
         //false = right and true = left
         bool BoolDirection { get; set; } = false;
 
