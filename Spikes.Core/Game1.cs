@@ -12,7 +12,7 @@ namespace Spikes.Core
         private SpriteBatch _spriteBatch;
         Vector2 baseScreenSize = new Vector2(800, 480);
         private Matrix globalTransformation;
-        int backbufferWidth, backbufferHeight;
+        int backbufferWidth, backbufferHeight, score;
 
         private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
 
@@ -53,7 +53,7 @@ namespace Spikes.Core
 
             base.Initialize();
 
-           
+
         }
 
         protected override void LoadContent()
@@ -67,8 +67,8 @@ namespace Spikes.Core
         private void Restart()
         {
 
-            
-           Plane = new GameModel.Plane(this, _spriteBatch);
+            score = 0;
+            Plane = new GameModel.Plane(this, _spriteBatch);
             SpikesManager = new SpikesManager(this, _spriteBatch);
             SpikesManager.loadSpikeRight();
             Plane.ToucheMur += Plane_ToucheMur;
@@ -81,9 +81,9 @@ namespace Spikes.Core
 
         private bool HandleCollision()
         {
-            foreach(var spike in SpikesManager.spikesListLeftRight)
+            foreach (var spike in SpikesManager.spikesListLeftRight)
             {
-               foreach( var rectangle in spike.BoundingRectangles)
+                foreach (var rectangle in spike.BoundingRectangles)
                 {
                     if (rectangle.Intersects(Plane.BoundingRectangle))
                         return true;
@@ -97,10 +97,12 @@ namespace Spikes.Core
             SpikesManager.spikesListLeftRight.Clear();
             if (!BoolDirection) // quand l'avion va vers la droite
             {
+                score++;
                 SpikesManager.loadSpikeRight();
             }
             else
             {
+                score++;
                 SpikesManager.loadSpikeLeft();
             }
         }
@@ -134,28 +136,28 @@ namespace Spikes.Core
             {
                 gameObjects.Update(gameTime);
             }
-            
-            died = HandleCollision(); 
 
-            foreach(var gameobject in GameObjects)
+            died = HandleCollision();
+
+            foreach (var gameobject in GameObjects)
             {
-                if(gameobject is GameModel.Plane)
+                if (gameobject is GameModel.Plane)
                 {
                     var plane = gameobject as GameModel.Plane;
-                    if(plane.hasDied)
+                    if (plane.hasDied)
                     {
                         died = true;
-                        
+
                     }
                 }
 
             }
 
-            if(died)
+            if (died)
             {
                 GameObjects.Clear();
                 Restart();
-            }       
+            }
             base.Update(gameTime);
         }
 
