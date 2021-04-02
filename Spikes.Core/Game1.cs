@@ -12,20 +12,10 @@ namespace Spikes.Core
         private SpriteBatch _spriteBatch;
         Vector2 baseScreenSize = new Vector2(800, 480);
         private Matrix globalTransformation;
-        int backbufferWidth, backbufferHeight, score;
-
-        private IList<GameObject> GameObjects { get; set; } = new List<GameObject>();
-
-        private bool _hasStarted;
-
-        private bool died = false;
-        GameModel.Plane Plane { get; set; }
-
-        public SpikesManager SpikesManager { get; set; }
-
-        public GameObject Background { get; set; }
+        int backbufferWidth, backbufferHeight;
 
 
+        public GameManager GameManager { get; set; }
 
         public Game1()
         {
@@ -49,62 +39,13 @@ namespace Spikes.Core
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
-
-
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Restart();
-
-            // TODO: use this.Content to load your game content here
-        }
-
-        private void Restart()
-        {
-
-            score = 0;
-            Plane = new GameModel.Plane(this, _spriteBatch);
-            SpikesManager = new SpikesManager(this, _spriteBatch);
-            SpikesManager.loadSpikeRight();
-            Plane.ToucheMur += Plane_ToucheMur;
-            GameObjects.Add(Plane);
-            GameObjects.Add(SpikesManager);
-            Background = new Background(this, _spriteBatch);
-
-            _hasStarted = false;
-        }
-
-        private bool HandleCollision()
-        {
-            foreach (var spike in SpikesManager.spikesListLeftRight)
-            {
-                foreach (var rectangle in spike.BoundingRectangles)
-                {
-                    if (rectangle.Intersects(Plane.BoundingRectangle))
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        private void Plane_ToucheMur(bool BoolDirection)
-        {
-            SpikesManager.spikesListLeftRight.Clear();
-            if (!BoolDirection) // quand l'avion va vers la droite
-            {
-                score++;
-                SpikesManager.loadSpikeRight();
-            }
-            else
-            {
-                score++;
-                SpikesManager.loadSpikeLeft();
-            }
+            GameManager = new GameManager(this, _spriteBatch);
         }
 
 
@@ -123,41 +64,13 @@ namespace Spikes.Core
 
             //Condition to start the game
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                _hasStarted = true;
+                GameManager._hasStarted = true;
 
 
-            if (!_hasStarted)
+            if (!GameManager._hasStarted)
                 return;
 
-
-            Background.Update(gameTime);
-
-            foreach (var gameObjects in GameObjects)
-            {
-                gameObjects.Update(gameTime);
-            }
-
-            died = HandleCollision();
-
-            foreach (var gameobject in GameObjects)
-            {
-                if (gameobject is GameModel.Plane)
-                {
-                    var plane = gameobject as GameModel.Plane;
-                    if (plane.hasDied)
-                    {
-                        died = true;
-
-                    }
-                }
-
-            }
-
-            if (died)
-            {
-                GameObjects.Clear();
-                Restart();
-            }
+            GameManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -167,14 +80,11 @@ namespace Spikes.Core
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, globalTransformation);
-            Background.Draw(gameTime);
+            GameManager.Background.Draw(gameTime);
             _spriteBatch.End();
 
             _spriteBatch.Begin();
-            foreach (var gameObjects in GameObjects)
-            {
-                gameObjects.Draw(gameTime);
-            }
+            GameManager.Draw(gameTime);
             _spriteBatch.End();
 
             base.Draw(gameTime);
