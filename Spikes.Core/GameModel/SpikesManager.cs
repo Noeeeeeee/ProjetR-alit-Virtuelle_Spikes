@@ -6,16 +6,37 @@ using System.Text;
 
 namespace Spikes.Core.GameModel
 {
+    /// <summary>
+    /// Class which manager the spikes
+    /// </summary>
     public class SpikesManager : GameObject
     {
+        /// <summary>
+        /// List of all the spikes on the top and bottom
+        /// </summary>
         public IList<Spike> spikesListTopBottom { get; set; } = new List<Spike>();
-        public IList<Spike> spikesListLeftRight { get;  set; } = new List<Spike>();
+
+        /// <summary>
+        /// List of all the spikes on the left and right side
+        /// </summary>
+        public IList<Spike> spikesListLeftRight { get; set; } = new List<Spike>();
 
 
-        //Screen Parameters
+        /// <summary>
+        /// width of the screen
+        /// </summary>
         int screenWidth;
+
+        /// <summary>
+        /// height of the screen
+        /// </summary>
         int screenHeight;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="game"> game </param>
+        /// <param name="spriteBatch"> spritebatch of the game</param>
         public SpikesManager(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
             LoadContent();
@@ -35,6 +56,10 @@ namespace Spikes.Core.GameModel
 
         }
 
+        /// <summary>
+        /// Load all the spikes on the left side
+        /// </summary>
+        /// <param name="score">score of the player</param>
         public void loadSpikeLeft(int score)
         {
             int maxSpikesOnLeft = getDifficulties(score);
@@ -48,6 +73,10 @@ namespace Spikes.Core.GameModel
             }
         }
 
+        /// <summary>
+        /// Load all the spikes on the left side
+        /// </summary>
+        /// <param name="score">score of the player</param>
         public void loadSpikeRight(int score)
         {
             int maxspikesOnRight = getDifficulties(score);
@@ -61,22 +90,33 @@ namespace Spikes.Core.GameModel
             }
         }
 
+        /// <summary>
+        /// Generate a difficulty depending on the socre of the player
+        /// </summary>
+        /// <param name="score"></param>
+        /// <returns></returns>
         private int getDifficulties(int score)
         {
-            if(score <= 5)
+            if (score <= 5)
             {
                 return RandomHelper.getNextIntBetween(1, 3);
             }
-            else if(score > 5 && score <= 20)
+            else if (score > 5 && score <= 20)
             {
                 return RandomHelper.getNextIntBetween(3, 5);
-            }else if (score > 20)
+            }
+            else if (score > 20)
             {
                 return RandomHelper.getNextIntBetween(5, 8);
             }
             return 1;
         }
 
+        /// <summary>
+        /// Load all the spikes on the top and the bottom
+        /// </summary>
+        /// <param name="screenWidth">width of the screen</param>
+        /// <param name="screenHeight">height of the screen</param>
         private void loadSpikesTopBottom(int screenWidth, int screenHeight)
         {
             for (int i = 0; i < screenWidth; i += 45)
@@ -93,7 +133,7 @@ namespace Spikes.Core.GameModel
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            foreach(var spike in spikesListTopBottom)
+            foreach (var spike in spikesListTopBottom)
             {
                 spike.Update(gameTime);
             }
@@ -113,7 +153,7 @@ namespace Spikes.Core.GameModel
             {
                 spike.Draw(gameTime);
             }
-            if(spikesListLeftRight.Count != 0)
+            if (spikesListLeftRight.Count != 0)
             {
                 foreach (var spike in spikesListLeftRight)
                 {
