@@ -15,6 +15,8 @@ namespace Spikes.Core.GameModel
         /// </summary>
         public int score { get; private set; }
 
+        public int dernierScore { get; private set; }
+
         /// <summary>
         /// List of all objetcs
         /// </summary>
@@ -44,6 +46,7 @@ namespace Spikes.Core.GameModel
         /// Background of the game
         /// </summary>
         public GameObject Background { get; private set; }
+
 
         /// <summary>
         /// Constructor
@@ -116,6 +119,7 @@ namespace Spikes.Core.GameModel
 
         protected override void LoadContent()
         {
+
             base.LoadContent();
 
         }
@@ -137,9 +141,10 @@ namespace Spikes.Core.GameModel
                 if (gameobject is Plane)
                 {
                     var plane = gameobject as Plane;
-                    if (plane.hasDied)
+                    if (plane.hasDied || HandleCollision())
                     {
                         died = true;
+                        dernierScore = score;
 
                     }
                 }
@@ -157,14 +162,13 @@ namespace Spikes.Core.GameModel
 
         public override void Draw(GameTime gameTime)
         {
-
             foreach (var gameObjects in GameObjects)
             {
                 gameObjects.Draw(gameTime);
             }
 
             base.Draw(gameTime);
-
+            
         }
     }
 }
