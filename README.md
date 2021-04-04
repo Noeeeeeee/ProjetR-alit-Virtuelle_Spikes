@@ -15,8 +15,7 @@ Cette application a été développée par Noé Chevassus et Paul Bonhomme.
 
 ## Comment lancer l'application ?
 
-+ En lancant le projet dans visual-studio après avoir chargé la solution sur votre ordinateur.
-+ En installant l'application à partir du fichier setup fourni dans le dossier de setup
++ En lancant le projet dans visual-studio après avoir chargé la solution, et défini le Spikes.Windows en tant que projet de démarrage.
 
 ## Langages utilisés ?
 

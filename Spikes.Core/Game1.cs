@@ -93,7 +93,7 @@ namespace Spikes.Core
 
                 _spriteBatch.Begin();
                 _spriteBatch.DrawString(score, "Votre dernier score : " + GameManager.lastscore, new Vector2(225, 310), Color.Black);
-                _spriteBatch.DrawString(startSentence, "Faites leftShift pour lancer le jeu ", new Vector2(130, 360), Color.Black);
+                _spriteBatch.DrawString(startSentence, "Faites leftShift pour lancer le jeu ", new Vector2(130, 350), Color.Black);
                 _spriteBatch.End();
             }
             else
