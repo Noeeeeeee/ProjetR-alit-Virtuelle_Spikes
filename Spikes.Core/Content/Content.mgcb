@@ -265,17 +265,17 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Spikes/rockSnowDown.png
 
-#begin font.spritefont
+#begin score.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:font.spritefont
+/build:score.spritefont
 
-#begin phraseLancement.spritefont
+#begin startSentence.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:phraseLancement.spritefont
+/build:startSentence.spritefont
 

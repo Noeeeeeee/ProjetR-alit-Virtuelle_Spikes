@@ -13,8 +13,8 @@ namespace Spikes.Core
         Vector2 baseScreenSize = new Vector2(800, 480);
         private Matrix globalTransformation;
         int backbufferWidth, backbufferHeight;
-        public SpriteFont font;
-        public SpriteFont phraseLancement;
+        public SpriteFont score;
+        public SpriteFont startSentence;
 
         public GameManager GameManager { get; set; }
 
@@ -45,8 +45,8 @@ namespace Spikes.Core
 
         protected override void LoadContent()
         {
-            font = Content.Load<SpriteFont>("font");
-            phraseLancement = Content.Load<SpriteFont>("phraseLancement");
+            score = Content.Load<SpriteFont>("score");
+            startSentence = Content.Load<SpriteFont>("startSentence");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager = new GameManager(this, _spriteBatch);
 
@@ -92,14 +92,14 @@ namespace Spikes.Core
             {
 
                 _spriteBatch.Begin();
-                _spriteBatch.DrawString(font, "Votre dernier score : " + GameManager.dernierScore, new Vector2(225, 310), Color.Black);
-                _spriteBatch.DrawString(phraseLancement, "Faites leftShift pour lancer le jeu ", new Vector2(130, 360), Color.Black);
+                _spriteBatch.DrawString(score, "Votre dernier score : " + GameManager.lastscore, new Vector2(225, 310), Color.Black);
+                _spriteBatch.DrawString(startSentence, "Faites leftShift pour lancer le jeu ", new Vector2(130, 360), Color.Black);
                 _spriteBatch.End();
             }
             else
             {
                _spriteBatch.Begin();
-               _spriteBatch.DrawString(font, "Score : " + GameManager.score, new Vector2(300, 200), Color.Black);
+               _spriteBatch.DrawString(score, "Score : " + GameManager.score, new Vector2(300, 200), Color.Black);
                _spriteBatch.End();
             }
 

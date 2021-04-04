@@ -8,44 +8,84 @@ using System.Text;
 
 namespace Spikes.Core.GameModel
 {
+    /// <summary>
+    /// Class which represent a plane
+    /// </summary>
     public class Plane : GameObject
     {
+        /// <summary>
+        /// Texture of a plane
+        /// </summary>
         private Texture2D _texture;
-        private SpriteBatch _spriteBatch;
 
+        /// <summary>
+        /// Effect for the plane to rotate the texture
+        /// </summary>
         private SpriteEffects flip = SpriteEffects.None;
+
+        /// <summary>
+        /// value for the gravitation
+        /// </summary>
         private static float velocity { get; set; } = 3f;
 
+        /// <summary>
+        /// value for the gravitation
+        /// </summary>
         private static float gravitation { get; set; } = 3f;
+
+        /// <summary>
+        /// Vector of Gravitation
+        /// </summary>
         private Vector2 Gravitation { get; set; } = new Vector2(velocity, gravitation);
 
+        /// <summary>
+        /// Position of the plane
+        /// </summary>
         Vector2 planePosition { get; set; }
 
+        /// <summary>
+        /// BoundingRectangle of the plane
+        /// </summary>
         public Rectangle BoundingRectangle => new Rectangle((int)planePosition.X, (int)planePosition.Y, _texture.Width, _texture.Height);
 
+        /// <summary>
+        /// Verify that the plane has jumped
+        /// </summary>
         bool hasJumped = true;
 
-        //reach the limit of top screen
-        bool reachlimitY { get; set; } = false;
 
-        //reach the limit of bottom screen
-        bool reachlimitX { get; set; } = false;
-
+        /// <summary>
+        /// Verify that the plane has died
+        /// </summary>
         public bool hasDied = false;
 
-
-        //false = right and true = left
+        /// <summary>
+        /// Direction of the plane (false = right and true = left)
+        /// </summary>
         bool BoolDirection { get; set; } = false;
 
-        //Screen Parameters
+        /// <summary>
+        /// Screen parameter Width)
+        /// </summary>
         int screenWidth;
+
+        /// <summary>
+        /// Screen parameter Height
+        /// </summary>
         int screenHeight;
 
-        public event Action<bool> ToucheMur;
+        /// <summary>
+        /// provoke it self when a plaine hit the wall
+        /// </summary>
+        public event Action<bool> TouchWall;
 
+        /// <summary>
+        /// Constructor of the plane
+        /// </summary>
+        /// <param name="game">Game</param>
+        /// <param name="spriteBatch">Spritebatch</param>
         public Plane(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
-        {
-            _spriteBatch = spriteBatch;
+        {      
             LoadContent();
         }
 
@@ -78,7 +118,6 @@ namespace Spikes.Core.GameModel
 
             }
 
-            //_spriteBatch.Draw(_texture, planePosition, Color.White);
             _spriteBatch.Draw(_texture, planePosition, null, Color.White, 0.0f, Vector2.Zero, 1.0f, flip, 0.0f);
         }
 
@@ -96,15 +135,15 @@ namespace Spikes.Core.GameModel
             {
                 if (hasJumped && key == Keys.Space)
                 {
-                    if (BoolDirection) //A gauche
+                    if (BoolDirection) //In left
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -50));
+                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -65));
                         hasJumped = false;
                     }
 
-                    else //A droite
+                    else //In right
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(20, -50));
+                        planePosition = Vector2.Add(planePosition, new Vector2(20, -65));
                         hasJumped = false;
                     }
                 }
@@ -118,54 +157,70 @@ namespace Spikes.Core.GameModel
             planePosition = Vector2.Add(planePosition, Gravitation);
 
 
-            //var touchCollection = TouchPanel.GetState(); // phone's screen
-            //foreach (var touchLocation in touchCollection)
-            //{
-            //    if (touchLocation.State == TouchLocationState.Pressed)
-            //    {
-            //        //if (touchLocation.Position.X > 10)
-            //        //{
-            //        //}
-            //        Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, jump * (float)gameTime.ElapsedGameTime.TotalSeconds));
-            //    }
-            //    else Position = Vector2.Add(Position, new Vector2(velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, gravity * (float)gameTime.ElapsedGameTime.TotalSeconds));
-
-            //}
-            if (BoundingRectangle.X <= 0 && BoolDirection)
+            if (isCollideLeft())
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
                 BoolDirection = false;
-                ToucheMur(BoolDirection);
+                TouchWall(BoolDirection);
             }
 
-            if (BoundingRectangle.X + BoundingRectangle.Width >= screenWidth && !BoolDirection)
+            if (isCollideRight())
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitX);
                 BoolDirection = true;
-                ToucheMur(BoolDirection);
+                TouchWall(BoolDirection);
             }
 
-            if (BoundingRectangle.Y <= 100)
+            if (isCollideTop())
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
-                reachlimitY = true;
-            }
-
-            if (reachlimitY == true)
-            {
-                System.Diagnostics.Debug.WriteLine("Touche le haut ou le bas du terrain");
-                reachlimitY = false;
                 hasDied = true;
             }
 
-            if (BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight - 100)
+
+            if (isCollideBottom())
             {
                 Gravitation = Vector2.Reflect(Gravitation, Vector2.UnitY);
-                reachlimitY = true;
                 hasDied = true;
             }
 
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// bool method Collision with right side of the screen
+        /// </summary>
+        /// <returns>true or false</returns>
+        public bool isCollideRight()
+        {
+            return BoundingRectangle.X + BoundingRectangle.Width >= screenWidth && !BoolDirection;
+        }
+
+        /// <summary>
+        /// bool method Collision with left side of the screen
+        /// </summary>
+        /// <returns>true or false</returns>
+        public bool isCollideLeft()
+        {
+            return BoundingRectangle.X <= 0 && BoolDirection;
+        }
+
+        /// <summary>
+        /// bool method Collision with the top of the screen
+        /// </summary>
+        /// <returns></returns>
+        public bool isCollideTop()
+        {
+            return BoundingRectangle.Y <= 80;
+        }
+
+        /// <summary>
+        /// bool method Collision with the bottom of the screen
+        /// </summary>
+        /// <returns></returns>
+        public bool isCollideBottom()
+        {
+            return BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight - 100;
         }
     }
 }

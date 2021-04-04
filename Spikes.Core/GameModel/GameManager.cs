@@ -15,7 +15,7 @@ namespace Spikes.Core.GameModel
         /// </summary>
         public int score { get; private set; }
 
-        public int dernierScore { get; private set; }
+        public int lastscore { get; private set; }
 
         /// <summary>
         /// List of all objetcs
@@ -68,7 +68,7 @@ namespace Spikes.Core.GameModel
             Plane = new Plane(Game, _spriteBatch);
             SpikesManager = new SpikesManager(Game, _spriteBatch);
             SpikesManager.loadSpikeRight(score);
-            Plane.ToucheMur += Plane_ToucheMur;
+            Plane.TouchWall += Plane_TouchWall;
             GameObjects.Add(Plane);
             GameObjects.Add(SpikesManager);
             Background = new Background(Game, _spriteBatch);
@@ -97,7 +97,7 @@ namespace Spikes.Core.GameModel
         /// Method which verify if the plane is touching the left or right side
         /// </summary>
         /// <param name="BoolDirection"></param>
-        private void Plane_ToucheMur(bool BoolDirection)
+        private void Plane_TouchWall(bool BoolDirection)
         {
             SpikesManager.spikesListLeftRight.Clear();
             if (!BoolDirection) // quand l'avion va vers la droite
@@ -144,7 +144,7 @@ namespace Spikes.Core.GameModel
                     if (plane.hasDied || HandleCollision())
                     {
                         died = true;
-                        dernierScore = score;
+                        lastscore = score;
 
                     }
                 }
