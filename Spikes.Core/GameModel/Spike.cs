@@ -26,10 +26,6 @@ namespace Spikes.Core.GameModel
         /// </summary>
         public IList<Rectangle> BoundingRectangles { get; set; } = new List<Rectangle>();
 
-        /// <summary>
-        /// Position of the spike
-        /// </summary>
-        Vector2 spikePosition { get; set; }
 
         /// <summary>
         /// width of the screen
@@ -52,7 +48,6 @@ namespace Spikes.Core.GameModel
         {
             this.imagePath = imagePath;
             LoadContent();
-            spikePosition = position;
         }
 
         /// <summary>

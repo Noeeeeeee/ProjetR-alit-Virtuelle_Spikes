@@ -13,8 +13,8 @@ namespace Spikes.Core
         Vector2 baseScreenSize = new Vector2(800, 480);
         private Matrix globalTransformation;
         int backbufferWidth, backbufferHeight;
-        public SpriteFont score;
-        public SpriteFont startSentence;
+        private SpriteFont score;
+        private SpriteFont startSentence;
 
         public GameManager GameManager { get; set; }
 
