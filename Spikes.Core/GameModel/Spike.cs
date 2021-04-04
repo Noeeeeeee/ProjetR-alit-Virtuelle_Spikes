@@ -26,16 +26,20 @@ namespace Spikes.Core.GameModel
         /// </summary>
         public IList<Rectangle> BoundingRectangles { get; set; } = new List<Rectangle>();
 
+        /// <summary>
+        /// Position of the spike
+        /// </summary>
+        public Vector2 spikePosition { get; set; }
 
         /// <summary>
         /// width of the screen
         /// </summary>
-        int screenWidth;
+        private int screenWidth;
 
         /// <summary>
         /// height of the screen
         /// </summary>
-        int screenHeight;
+        private int screenHeight;
 
         /// <summary>
         /// constructor
@@ -48,6 +52,7 @@ namespace Spikes.Core.GameModel
         {
             this.imagePath = imagePath;
             LoadContent();
+            spikePosition = position;
         }
 
         /// <summary>

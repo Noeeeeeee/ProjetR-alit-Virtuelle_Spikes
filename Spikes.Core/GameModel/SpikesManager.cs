@@ -25,12 +25,12 @@ namespace Spikes.Core.GameModel
         /// <summary>
         /// width of the screen
         /// </summary>
-        int screenWidth;
+        private int screenWidth;
 
         /// <summary>
         /// height of the screen
         /// </summary>
-        int screenHeight;
+        private int screenHeight;
 
         /// <summary>
         /// Constructor

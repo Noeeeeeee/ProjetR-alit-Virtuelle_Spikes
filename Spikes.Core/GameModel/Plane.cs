@@ -137,13 +137,13 @@ namespace Spikes.Core.GameModel
                 {
                     if (BoolDirection) //In left
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -65));
+                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -60));
                         hasJumped = false;
                     }
 
                     else //In right
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(20, -65));
+                        planePosition = Vector2.Add(planePosition, new Vector2(20, -60));
                         hasJumped = false;
                     }
                 }
