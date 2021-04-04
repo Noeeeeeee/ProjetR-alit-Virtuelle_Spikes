@@ -41,7 +41,7 @@ namespace Spikes.Core.GameModel
         /// <summary>
         /// Position of the plane
         /// </summary>
-        Vector2 planePosition { get; set; }
+        private Vector2 planePosition { get; set; }
 
         /// <summary>
         /// BoundingRectangle of the plane
@@ -51,7 +51,7 @@ namespace Spikes.Core.GameModel
         /// <summary>
         /// Verify that the plane has jumped
         /// </summary>
-        bool hasJumped = true;
+        private bool hasJumped = true;
 
 
         /// <summary>
@@ -62,17 +62,17 @@ namespace Spikes.Core.GameModel
         /// <summary>
         /// Direction of the plane (false = right and true = left)
         /// </summary>
-        bool BoolDirection { get; set; } = false;
+        private bool BoolDirection { get; set; } = false;
 
         /// <summary>
         /// Screen parameter Width)
         /// </summary>
-        int screenWidth;
+        private int screenWidth;
 
         /// <summary>
         /// Screen parameter Height
         /// </summary>
-        int screenHeight;
+        private int screenHeight;
 
         /// <summary>
         /// provoke it self when a plaine hit the wall
@@ -137,13 +137,13 @@ namespace Spikes.Core.GameModel
                 {
                     if (BoolDirection) //In left
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -65));
+                        planePosition = Vector2.Add(planePosition, new Vector2(-20, -60));
                         hasJumped = false;
                     }
 
                     else //In right
                     {
-                        planePosition = Vector2.Add(planePosition, new Vector2(20, -65));
+                        planePosition = Vector2.Add(planePosition, new Vector2(20, -60));
                         hasJumped = false;
                     }
                 }
@@ -191,7 +191,7 @@ namespace Spikes.Core.GameModel
         /// bool method Collision with right side of the screen
         /// </summary>
         /// <returns>true or false</returns>
-        public bool isCollideRight()
+        private bool isCollideRight()
         {
             return BoundingRectangle.X + BoundingRectangle.Width >= screenWidth && !BoolDirection;
         }
@@ -200,7 +200,7 @@ namespace Spikes.Core.GameModel
         /// bool method Collision with left side of the screen
         /// </summary>
         /// <returns>true or false</returns>
-        public bool isCollideLeft()
+        private bool isCollideLeft()
         {
             return BoundingRectangle.X <= 0 && BoolDirection;
         }
@@ -209,7 +209,7 @@ namespace Spikes.Core.GameModel
         /// bool method Collision with the top of the screen
         /// </summary>
         /// <returns></returns>
-        public bool isCollideTop()
+        private bool isCollideTop()
         {
             return BoundingRectangle.Y <= 80;
         }
@@ -218,7 +218,7 @@ namespace Spikes.Core.GameModel
         /// bool method Collision with the bottom of the screen
         /// </summary>
         /// <returns></returns>
-        public bool isCollideBottom()
+        private bool isCollideBottom()
         {
             return BoundingRectangle.Y + BoundingRectangle.Height >= screenHeight - 100;
         }

@@ -29,17 +29,17 @@ namespace Spikes.Core.GameModel
         /// <summary>
         /// Position of the spike
         /// </summary>
-        Vector2 spikePosition { get; set; }
+        public Vector2 spikePosition { get; set; }
 
         /// <summary>
         /// width of the screen
         /// </summary>
-        int screenWidth;
+        private int screenWidth;
 
         /// <summary>
         /// height of the screen
         /// </summary>
-        int screenHeight;
+        private int screenHeight;
 
         /// <summary>
         /// constructor
